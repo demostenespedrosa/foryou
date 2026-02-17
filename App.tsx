@@ -24,8 +24,8 @@ const App: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<ScreenName>('Home');
   const [establishment, setEstablishment] = useState<Establishment | null>(null);
   
-  // Initialize services with Barber defaults for dev/testing, but in real app would start empty or fetch from DB
-  const [services, setServices] = useState<Service[]>(DEFAULT_SERVICES['Barber']);
+  // Initialize services with Hairdresser defaults (common for ForYou Studio context)
+  const [services, setServices] = useState<Service[]>(DEFAULT_SERVICES['Hairdresser']);
   const [appointments, setAppointments] = useState<Appointment[]>(MOCK_APPOINTMENTS);
   const [clients, setClients] = useState(MOCK_CLIENTS);
   const [schedule, setSchedule] = useState<WeeklySchedule>(MOCK_SCHEDULE);
@@ -41,9 +41,18 @@ const App: React.FC = () => {
     // Set default demo data if not already set (simulating data fetch)
     if (!establishment) {
       setEstablishment({
-        name: 'Barbearia Demo',
-        ownerName: 'Administrador Demo',
-        schedule: MOCK_SCHEDULE
+        name: 'ForYou Studio Recife',
+        ownerName: 'Clara Medeiros',
+        schedule: MOCK_SCHEDULE,
+        address: {
+            street: 'Av. Conselheiro Aguiar',
+            number: '1472',
+            neighborhood: 'Boa Viagem',
+            city: 'Recife',
+            state: 'PE',
+            zipCode: '51020-000',
+            complement: 'Galeria Trade Center'
+        }
       });
     }
     setIsAuthenticated(true);

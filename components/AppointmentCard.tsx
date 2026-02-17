@@ -99,16 +99,14 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({ appointment, clientDa
                  <p className="text-slate-500 text-sm">{appointment.serviceName}</p>
               </div>
               
-              {/* Avatar also clickable */}
+              {/* Avatar also clickable - REPLACED PHOTO WITH INITIALS */}
               <div 
                 onClick={handleClientAreaClick}
-                className="h-10 w-10 rounded-full overflow-hidden bg-slate-100 border border-slate-200 cursor-pointer"
+                className="h-10 w-10 rounded-full overflow-hidden bg-purple-100 border border-purple-200 cursor-pointer flex items-center justify-center shadow-sm"
               >
-                {appointment.clientPhoto ? (
-                    <img src={appointment.clientPhoto} alt={appointment.clientName} className="h-full w-full object-cover" />
-                ) : (
-                    <div className="h-full w-full flex items-center justify-center text-slate-400 text-xs">IMG</div>
-                )}
+                 <span className="font-bold text-purple-600 text-sm">
+                    {appointment.clientName.charAt(0).toUpperCase()}
+                 </span>
               </div>
             </div>
 
@@ -127,9 +125,12 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({ appointment, clientDa
 
                   {professional && (
                       <div className="flex items-center gap-1 bg-slate-50 border border-slate-100 px-2 py-0.5 rounded-full">
-                          {professional.photoUrl ? (
-                              <img src={professional.photoUrl} className="w-4 h-4 rounded-full" />
-                          ) : <User size={10} className="text-slate-400"/>}
+                          {/* REPLACED PROFESSIONAL PHOTO WITH INITIAL */}
+                          <div className="w-4 h-4 rounded-full bg-slate-200 flex items-center justify-center">
+                             <span className="text-[8px] font-bold text-slate-600">
+                                {professional.name.charAt(0).toUpperCase()}
+                             </span>
+                          </div>
                           <span className="text-[10px] text-slate-500 font-medium truncate max-w-[60px]">{professional.name.split(' ')[0]}</span>
                       </div>
                   )}

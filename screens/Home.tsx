@@ -239,7 +239,10 @@ const Home: React.FC<HomeProps> = ({ appointments, clients, professionals, servi
                         }
                     `}
                 >
-                    <img src={prof.photoUrl} className="w-6 h-6 rounded-full bg-slate-200 object-cover" />
+                    {/* REPLACED IMAGE WITH INITIALS */}
+                    <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-600">
+                        {prof.name.charAt(0).toUpperCase()}
+                    </div>
                     {prof.name.split(' ')[0]}
                 </button>
             ))}

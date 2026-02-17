@@ -35,9 +35,14 @@ const AddressSettings: React.FC<AddressSettingsProps> = ({ initialAddress, onSav
   const handleBlurCep = () => {
       if (zipCode.length >= 8 && !street) {
           // In a real app, fetch from viaCEP API
-          // Simulating auto-fill
-          setCity('São Paulo');
-          setState('SP');
+          // Simulating auto-fill for Recife
+          setCity('Recife');
+          setState('PE');
+          if (zipCode.startsWith('51')) {
+             setNeighborhood('Boa Viagem');
+          } else if (zipCode.startsWith('52')) {
+             setNeighborhood('Casa Forte');
+          }
       }
   }
 
@@ -69,7 +74,7 @@ const AddressSettings: React.FC<AddressSettingsProps> = ({ initialAddress, onSav
                     value={zipCode}
                     onChange={(e) => setZipCode(e.target.value)}
                     onBlur={handleBlurCep}
-                    placeholder="00000-000"
+                    placeholder="51020-000"
                     maxLength={9}
                     className="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all text-slate-800 font-medium"
                 />
@@ -129,7 +134,7 @@ const AddressSettings: React.FC<AddressSettingsProps> = ({ initialAddress, onSav
                     type="text" 
                     value={neighborhood}
                     onChange={(e) => setNeighborhood(e.target.value)}
-                    placeholder="Centro"
+                    placeholder="Boa Viagem"
                     className="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all text-slate-800 font-medium"
                 />
             </div>
@@ -143,7 +148,7 @@ const AddressSettings: React.FC<AddressSettingsProps> = ({ initialAddress, onSav
                     type="text" 
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    placeholder="São Paulo"
+                    placeholder="Recife"
                     className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all text-slate-800 font-medium"
                 />
              </div>
@@ -155,7 +160,7 @@ const AddressSettings: React.FC<AddressSettingsProps> = ({ initialAddress, onSav
                     type="text" 
                     value={state}
                     onChange={(e) => setState(e.target.value.toUpperCase())}
-                    placeholder="SP"
+                    placeholder="PE"
                     maxLength={2}
                     className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all text-slate-800 font-medium text-center"
                 />
