@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScreenName, Role, Establishment, Service, Appointment, WeeklySchedule, Professional, Address, Client, Plan } from './types';
+import { ScreenName, ClientScreenName, Role, Establishment, Service, Appointment, WeeklySchedule, Professional, Address, Client, Plan, UserMode } from './types';
 import { MOCK_APPOINTMENTS, MOCK_CLIENTS, MOCK_SCHEDULE, MOCK_PROFESSIONALS, DEFAULT_SERVICES, MOCK_PLANS } from './constants';
 import Login from './screens/Login';
 import Register from './screens/Register';
@@ -13,15 +13,24 @@ import AddressSettings from './screens/AddressSettings';
 import PlanSettings from './screens/PlanSettings';
 import ClientDetails from './screens/ClientDetails';
 import BottomNav from './components/BottomNav';
+import ClientBottomNav from './components/ClientBottomNav';
 import { ArrowLeft, Edit2, User } from 'lucide-react';
+
+// Client Screens
+import ClientHome from './screens/client/ClientHome';
+import ClientHistory from './screens/client/ClientHistory';
+import ClientSubscription from './screens/client/ClientSubscription';
+import ClientProfile from './screens/client/ClientProfile';
 
 const App: React.FC = () => {
   // Auth State
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
+  const [userMode, setUserMode] = useState<UserMode>('professional');
 
   // App State
   const [currentScreen, setCurrentScreen] = useState<ScreenName>('Home');
+  const [currentClientScreen, setCurrentClientScreen] = useState<ClientScreenName>('ClientHome');
   const [establishment, setEstablishment] = useState<Establishment | null>(null);
   
   // Initialize services with Hairdresser defaults (common for ForYou Studio context)
@@ -55,12 +64,26 @@ const App: React.FC = () => {
         }
       });
     }
+    setUserMode('professional');
     setIsAuthenticated(true);
   };
+
+  const handleClientLogin = () => {
+      // Simulate client login (Demo User is MOCK_CLIENTS[0] - Mariana Lima)
+      setUserMode('client');
+      setIsAuthenticated(true);
+      setCurrentClientScreen('ClientHome');
+  };
+
+  const handleLogout = () => {
+      setIsAuthenticated(false);
+      setUserMode('professional'); // Default back
+  }
 
   const handleRegisterComplete = (data: { role: Role; establishment: Establishment; services: Service[] }) => {
     setEstablishment({ ...data.establishment, schedule: MOCK_SCHEDULE });
     setServices(data.services);
+    setUserMode('professional');
     setIsAuthenticated(true);
     setIsRegistering(false);
   };
@@ -144,12 +167,60 @@ const App: React.FC = () => {
     return (
       <Login 
         onLogin={handleLogin} 
+        onClientLogin={handleClientLogin}
         onRegisterClick={() => setIsRegistering(true)} 
       />
     );
   }
 
-  // 2. Authenticated -> Main App
+  // 2. Client Mode
+  if (userMode === 'client') {
+      const demoClient = MOCK_CLIENTS[0]; // Mariana Lima
+
+      const handleClientBooking = (appt: Appointment) => {
+          handleAddAppointment(appt);
+          setCurrentClientScreen('ClientHistory');
+      };
+
+      return (
+          <div className="h-full flex flex-col bg-background">
+              <div className="flex-1 overflow-y-auto no-scrollbar scroll-smooth">
+                  {currentClientScreen === 'ClientHome' && (
+                      <ClientHome 
+                        professionals={professionals}
+                        services={services}
+                        existingAppointments={appointments}
+                        onBook={handleClientBooking}
+                        clientId={demoClient.id}
+                        clientName={demoClient.name}
+                      />
+                  )}
+                  {currentClientScreen === 'ClientHistory' && (
+                      <ClientHistory 
+                        appointments={appointments}
+                        client={demoClient}
+                      />
+                  )}
+                  {currentClientScreen === 'ClientSubscription' && (
+                      <ClientSubscription 
+                        client={demoClient}
+                        plans={plans}
+                      />
+                  )}
+                  {currentClientScreen === 'ClientProfile' && (
+                      <ClientProfile 
+                        client={demoClient}
+                        onLogout={handleLogout}
+                      />
+                  )}
+              </div>
+              <ClientBottomNav currentScreen={currentClientScreen} onNavigate={setCurrentClientScreen} />
+          </div>
+      )
+  }
+
+  // 3. Professional Mode (Existing)
+  
   // Sub-screen component for Professional List
   const ProfessionalListScreen = () => (
       <div className="h-full bg-slate-50 flex flex-col">

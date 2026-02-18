@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Sparkles, Lock, Mail, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { Sparkles, Lock, Mail, ArrowRight, Eye, EyeOff, User } from 'lucide-react';
 
 interface LoginProps {
   onLogin: () => void;
   onRegisterClick: () => void;
+  onClientLogin: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ onLogin, onRegisterClick }) => {
+const Login: React.FC<LoginProps> = ({ onLogin, onRegisterClick, onClientLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -116,10 +117,17 @@ const Login: React.FC<LoginProps> = ({ onLogin, onRegisterClick }) => {
 
           <div className="mt-6 flex items-center justify-between text-sm">
              <button onClick={fillDemoUser} className="text-purple-400 hover:text-primary transition-colors font-medium">
-               Usar Demo
+               Usar Demo Profissional
              </button>
-             <button className="text-slate-400 hover:text-slate-600">
-               Esqueceu a senha?
+             
+          </div>
+
+          <div className="mt-6 pt-6 border-t border-slate-100 text-center">
+             <button 
+                onClick={onClientLogin}
+                className="w-full py-3 bg-amber-50 text-amber-600 font-bold rounded-xl border border-amber-100 hover:bg-amber-100 transition-colors flex items-center justify-center gap-2"
+             >
+                <User size={18} /> Acessar como Cliente (Demo)
              </button>
           </div>
         </div>

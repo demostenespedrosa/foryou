@@ -102,6 +102,8 @@ export interface Transaction {
 }
 
 // Navigation Types
+export type UserMode = 'professional' | 'client';
+
 export type ScreenName = 
   | 'Onboarding' 
   | 'Home' 
@@ -115,3 +117,9 @@ export type ScreenName =
   | 'AddressSettings' // For address management
   | 'PlanSettings' // For Plan management
   | 'ClientDetails'; // NEW: Individual client view
+
+export type ClientScreenName = 
+  | 'ClientHome'
+  | 'ClientHistory'
+  | 'ClientSubscription'
+  | 'ClientProfile';
